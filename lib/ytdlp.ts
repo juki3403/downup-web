@@ -1,17 +1,6 @@
 import { create as createYoutubeDl } from "youtube-dl-exec";
 import path from "path";
 
-// PENTING — env var wajib di-set di Vercel Project Settings > Environment
-// Variables (bukan cuma .env lokal, karena postinstall script npm install
-// berjalan SEBELUM kode aplikasi kita sempat baca file .env):
-//   YOUTUBE_DL_SKIP_PYTHON=1
-// Tanpa ini, script postinstall youtube-dl-exec akan mencoba cek python3 di
-// sistem dan GAGAL di lingkungan build Vercel yang tidak selalu punya itu.
-// Binary standalone yt-dlp yang di-download sendiri sudah menyertakan Python
-// (dibundel via PyInstaller), jadi python3 di sistem TIDAK diperlukan saat
-// binary itu benar-benar dijalankan — pengecekan python3 di postinstall itu
-// langkah terpisah yang tidak relevan untuk skenario kita dan aman di-skip.
-// Detail lengkap ada di README.md bagian "Setup Vercel".
 const YTDLP_BINARY_PATH = path.join(
   process.cwd(),
   "node_modules",
@@ -44,7 +33,8 @@ export interface VideoInfoResult {
   audioOptions: StreamOption[];
 }
 
-const FORMAT_SORT = "codec:h264:aac";
+// youtube-dl-exec typings require formatSort to be an array.
+const FORMAT_SORT = ["codec:h264", "codec:aac"];
 
 function isH264Codec(vcodec: string | null | undefined): boolean {
   if (!vcodec) return false;
