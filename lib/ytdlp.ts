@@ -33,6 +33,7 @@ export interface VideoInfoResult {
   audioOptions: StreamOption[];
 }
 
+// Keep only options supported by the installed youtube-dl-exec typings.
 const FORMAT_SORT = ["codec:h264", "codec:aac"] as any;
 
 function isH264Codec(vcodec: string | null | undefined): boolean {
@@ -58,7 +59,6 @@ export async function fetchVideoInfo(url: string): Promise<VideoInfoResult> {
     preferFreeFormats: false,
     noPlaylist: true,
     formatSort: FORMAT_SORT,
-    extractorArgs: "youtube:skip=hls,translated_subs",
   });
 
   const data = raw as any;
@@ -154,7 +154,6 @@ export async function resolveStreamUrl(
       noCheckCertificates: true,
       noPlaylist: true,
       formatSort: FORMAT_SORT,
-      extractorArgs: "youtube:skip=hls,translated_subs",
     });
     const videoUrl = String(raw).trim().split("\n")[0];
     return { videoUrl, audioUrl: null, needsSeparateAudio: false };
@@ -167,7 +166,6 @@ export async function resolveStreamUrl(
     noCheckCertificates: true,
     noPlaylist: true,
     formatSort: FORMAT_SORT,
-    extractorArgs: "youtube:skip=hls,translated_subs",
   });
   const lines = String(raw).trim().split("\n").filter(Boolean);
   const videoUrl = lines[0];
