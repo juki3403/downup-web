@@ -33,9 +33,6 @@ export interface VideoInfoResult {
   audioOptions: StreamOption[];
 }
 
-// youtube-dl-exec's current typings use a narrow union for formatSort.
-// Cast the CLI values to that option type at the boundary so the build does
-// not reject valid yt-dlp format-sort expressions.
 const FORMAT_SORT = ["codec:h264", "codec:aac"] as any;
 
 function isH264Codec(vcodec: string | null | undefined): boolean {
@@ -57,7 +54,6 @@ export async function fetchVideoInfo(url: string): Promise<VideoInfoResult> {
   const raw = await youtubedl(url, {
     dumpSingleJson: true,
     noWarnings: true,
-    noCallHome: true,
     noCheckCertificates: true,
     preferFreeFormats: false,
     noPlaylist: true,
@@ -155,7 +151,6 @@ export async function resolveStreamUrl(
       format: formatId,
       getUrl: true,
       noWarnings: true,
-      noCallHome: true,
       noCheckCertificates: true,
       noPlaylist: true,
       formatSort: FORMAT_SORT,
@@ -169,7 +164,6 @@ export async function resolveStreamUrl(
     format: `${formatId}+bestaudio`,
     getUrl: true,
     noWarnings: true,
-    noCallHome: true,
     noCheckCertificates: true,
     noPlaylist: true,
     formatSort: FORMAT_SORT,
