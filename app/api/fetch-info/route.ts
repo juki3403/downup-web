@@ -32,7 +32,9 @@ export async function POST(request: NextRequest) {
   }
 
   try {
-    const info = await fetchVideoInfo(url, platform);
+    // fetchVideoInfo currently accepts only the URL. Platform detection above
+    // is kept for input validation; yt-dlp handles the supported extractor.
+    const info = await fetchVideoInfo(url);
     return NextResponse.json(info);
   } catch (err: any) {
     const message = err?.stderr || err?.message || "Gagal mengambil informasi video";
