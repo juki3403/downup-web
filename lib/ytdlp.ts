@@ -117,7 +117,7 @@ export async function fetchVideoInfo(url: string): Promise<VideoInfoResult> {
     title: info.videoDetails.title || "Video",
     thumbnailUrl: info.videoDetails.thumbnails?.[0]?.url || null,
     durationSeconds: toNumber(info.videoDetails.lengthSeconds),
-    uploader: info.videoDetails.author || null,
+    uploader: info.videoDetails.author?.name || null,
     videoOptions: dedupedVideo,
     audioOptions: Array.from(bestAudioPerLabel.values()),
   };
